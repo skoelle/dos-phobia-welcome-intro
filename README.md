@@ -10,7 +10,9 @@ The music for the intro was borrowed from an old Amiga demo and played using a p
 
 [Phobia Website](https://www.moonweb.org/phobia/)
 
-![Welcome Intro Screenshot]([http://url/to/img.png](https://www.moonweb.org/phobia/welcomeintro.png))
+[YouTube Video of the Intro](https://www.youtube.com/watch?v=Cj3RgjVs5dk&t=3s)
+
+![Welcome Intro Screenshot](images/screenshot.png)
 
 ## Methods in the Turbo Pascal Code
 
