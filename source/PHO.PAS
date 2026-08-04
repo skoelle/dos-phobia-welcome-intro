@@ -1,3 +1,5 @@
+{ Copyright (c) 2026 Stefan Koelle (https://stefankoelle.de) }
+{ Licensed under the MIT License. See LICENSE file in project root for details. }
 {$A-,B-,D-,E-,F-,G-,I-,L-,N-,O-,R-,S-,V-,X-}
 {$M 16384,0,59360}
 uses crt,textgraf,pho_u,pho_u2;
@@ -209,13 +211,13 @@ begin
     end;
   end;
 end;
-procedure CLI; inline( $FA );                { Interrupts unterdrÅcken }
+procedure CLI; inline( $FA );                { Interrupts unterdrÔøΩcken }
 procedure STI; inline( $FB );             { Interrupts wieder erlauben }
 begin
   CLI;
   modinit;
   clrscr;
-  writeln('PHOB≠A Intro');
+  writeln('PHOBÔøΩA Intro');
   writeln('------------');
   writeln;
   writeln('F1 -PC Speaker     (10000 kHz)');

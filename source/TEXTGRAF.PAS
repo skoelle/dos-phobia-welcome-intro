@@ -1,29 +1,31 @@
+{ Copyright (c) 2026 Stefan Koelle (https://stefankoelle.de) }
+{ Licensed under the MIT License. See LICENSE file in project root for details. }
         unit TextGraf;
 interface
 uses dos;
 type
   MonitorTyp = (Hercules, EGA, VGA, other);
-  VGAColorInfo = array[0..2] of byte;        { eine VGA-Farbe: nur fÅr Demo }
+  VGAColorInfo = array[0..2] of byte;        { eine VGA-Farbe: nur fÔøΩr Demo }
   VGAColors = array[0..255] of VGAColorInfo; { alle VGA-Farben: dito }
 
   function InitTextGraf: integer;
-    { Mu· ganz zu Anfang des Programms, noch im Textmodus aufgerufen
+    { MuÔøΩ ganz zu Anfang des Programms, noch im Textmodus aufgerufen
       werden. Ohne das funktioniert der Rest nicht. Ergebnis 0: Alles Ok,
       unbekannter Videotyp: -1, zuwenig Speicher: 1 (Bedarf ca. 12Kb) }
   procedure SetPaletteSave(On: boolean);
     { Mit On = true nach InitTextGraf und im Textmodus aufrufen. Sichert die
-      Textpalette und reserviert Speicher fÅr die Grafikpalette, die dann
+      Textpalette und reserviert Speicher fÔøΩr die Grafikpalette, die dann
       automatisch verwendet werden. On = false schaltet diese Automatik
-      wieder ab und gibt den Speicher fÅr die Paletten (ca. 1.5Kb) frei.}
+      wieder ab und gibt den Speicher fÔøΩr die Paletten (ca. 1.5Kb) frei.}
   procedure ToText;
     { Schaltet vom Grafik- in den Testmodus. Bildspeicher etc. werden in
       Sicherheit gebracht }
   procedure ToGraph;
-    { Schaltet in die Grafik zurÅck. Vorher sollte ein Grafikmodus mit
+    { Schaltet in die Grafik zurÔøΩck. Vorher sollte ein Grafikmodus mit
       ToText verlassen worden sein, um alle Werte zu initialisieren }
 
   procedure GrafikMode(Mode: byte);
-     { nur fÅr das Demoprogramm. Kann gelîscht werden, wenn BGI-Routinen
+     { nur fÔøΩr das Demoprogramm. Kann gelÔøΩscht werden, wenn BGI-Routinen
        (InitGraph) verwendet werden }
   function GetMonTyp: MonitorTyp;
      { dito }
@@ -38,7 +40,7 @@ type
   ModeType = (Text, Grafik, unknown);
 
 var
-  regs: registers;                              { fÅr intr }
+  regs: registers;                              { fÔøΩr intr }
   CharGen: CharGenArray absolute $A000:0;       { Adresse Zeichengenerator }
   BMode: byte absolute $40:$49;                 { Bios-Videomode }
 
@@ -48,7 +50,7 @@ const
     TScreen: ^ScreenArray = nil;        { zeigt in den Bildspeicher }
     ScrBuf: ^ScreenArray = nil;         { speichert Textschirm zwischen }
     CGBuf: ^CharGenArray = nil;         { speichert Zeichengenerator }
-    ModeNr: byte = $FF;                 { Kennung fÅr Init }
+    ModeNr: byte = $FF;                 { Kennung fÔøΩr Init }
     TMode: byte = $FF;                  { der zu restaurierende Textmodus }
     GMode: byte = $FF;                  { dito Grafikmodus }
     VGATextPal: ^VGAColors = nil;
@@ -60,7 +62,7 @@ begin
   begin
     AX:= $1A00; 		{ Display Combination abfragen }
     Intr($10, regs);
-    IsVga:= (AL = $1A); 	{ gÅltiger Aufruf }
+    IsVga:= (AL = $1A); 	{ gÔøΩltiger Aufruf }
   end;
 end;
 
@@ -71,7 +73,7 @@ begin
     AH:= $12;			{ Funktion $12 }
     BL:= $10;			{ get EGA Information }
     Intr($10, regs);
-    IsEga:= (BL <> $10);	{ hat sich was geÑndert ? }
+    IsEga:= (BL <> $10);	{ hat sich was geÔøΩndert ? }
   end;
 end;
 
@@ -110,10 +112,10 @@ end;
 procedure HercTextMode;
 var i: integer;
     ModeReg: byte absolute 0:$465;
-const HData: array[0..13] of byte =  { Timingdaten! Nicht verÑndern! }
+const HData: array[0..13] of byte =  { Timingdaten! Nicht verÔøΩndern! }
         ($61,$50,$52,$0f,$19,$06,$19,$19,$02,$0d,$0b,$0c,0,0);
 begin
-  port[$3bf]:= 0;	{ Config Reg: HalfMode: eine Seite (3 fÅr Full Mode) }
+  port[$3bf]:= 0;	{ Config Reg: HalfMode: eine Seite (3 fÔøΩr Full Mode) }
   port[$3b8]:= $21;	{ Mode Control: Dunkel, Text, 80x25 }
   for i:= 0 to 13 do	{ die Timing-Daten komplett }
   begin
@@ -127,10 +129,10 @@ end;
 procedure HercGraphMode;
 var i: integer;
     ModeReg: byte absolute 0:$465;
-const HData: array[0..13] of byte =  { Timingdaten! Nicht verÑndern! }
+const HData: array[0..13] of byte =  { Timingdaten! Nicht verÔøΩndern! }
 	($35,$2d,$2e,$07,$5b,$02,$57,$57,$02,$03,0,0,0,0);
 begin
-  port[$3bf]:= 1;	{ Config Reg: HalfMode: eine Seite (3 fÅr Full Mode) }
+  port[$3bf]:= 1;	{ Config Reg: HalfMode: eine Seite (3 fÔøΩr Full Mode) }
   port[$3b8]:= 2;	{ Mode Control: Dunkel, Grafik, Seite 0 }
   for i:= 0 to 13 do	{ die Timing-Daten komplett }
   begin
@@ -141,10 +143,10 @@ begin
   ModeReg:= $0a;			{ im BIOS-Ram protokollieren }
 end;
 
-procedure GrafikMode(Mode: byte); { Setzt den Videomodus, nur fÅr Demo }
+procedure GrafikMode(Mode: byte); { Setzt den Videomodus, nur fÔøΩr Demo }
 var i: integer;
 begin
-  if VMonitor <> Hercules then	{ alle au·er Hercules sind sehr einfach }
+  if VMonitor <> Hercules then	{ alle auÔøΩer Hercules sind sehr einfach }
   with regs do
   begin
     AX:= Mode;			{ AH:= 0; AL:= Mode }
@@ -157,13 +159,13 @@ begin
   end;
 end;
 
-function GetMonTyp: MonitorTyp; { Zugriffsfunktion, nur fÅr das Demo }
+function GetMonTyp: MonitorTyp; { Zugriffsfunktion, nur fÔøΩr das Demo }
 begin
   GetMonTyp:= VMonitor;
 end;
 
 procedure ToTextVGA;    { sichert den Teil des Grafik-Bildspeichers, der }
-var b: byte;            { vom Zeichengenerator Åberschrieben wird }
+var b: byte;            { vom Zeichengenerator ÔøΩberschrieben wird }
 begin
   regs.ax:= $90;        { Standardmodus setzen um Zugriff sicherzustellen }
   intr($10, regs);      { Bildspeicher bleibt erhalten }
@@ -171,10 +173,10 @@ begin
   b:= Port[$3cf];       { lesen }
   Port[$3cf]:= 2;       { Plane 2 ein }
   CGBuf^:= CharGen;     { Grafikinhalt von Zeichengenerator sichern }
-  Port[$3cf]:= b;       { Wert zurÅck }
+  Port[$3cf]:= b;       { Wert zurÔøΩck }
 end;
 
-procedure ToTextEGA;    { wie oben jedoch Variante fÅr EGA, }
+procedure ToTextEGA;    { wie oben jedoch Variante fÔøΩr EGA, }
 var b: byte;            { deren Register nicht lesbar sind }
 begin
   regs.ax:= $90;        { Standardmodus setzen um Zugriff sicherzustellen }
@@ -182,10 +184,10 @@ begin
   Port[$3ce]:= 4;       { Read Map Select holen }
   Port[$3cf]:= 2;       { Plane 2 ein }
   CGBuf^:= CharGen;     { Grafikinhalt von Zeichengenerator sichern }
-  Port[$3cf]:= 0;       { Default zurÅck }
+  Port[$3cf]:= 0;       { Default zurÔøΩck }
 end;
 
-procedure ToGraphVGA;   { Åberschreibt den Zeichengenerator mit }
+procedure ToGraphVGA;   { ÔøΩberschreibt den Zeichengenerator mit }
 var b: byte;            {  gesicherten Grafikinhalt }
 begin
   regs.ax:= $90;        { Standardmodus setzen um Zugriff sicherzustellen }
@@ -193,11 +195,11 @@ begin
   Port[$3C4]:= 2;       { Map Mask Register holen }
   b:= Port[$3c5];       { lesen }
   Port[$3c5]:= 4;       { Plane 2 ein }
-  CharGen:= CGBuf^;     { Zeichengenerator zurÅck }
-  Port[$3c5]:= b;       { Wert zurÅck }
+  CharGen:= CGBuf^;     { Zeichengenerator zurÔøΩck }
+  Port[$3c5]:= b;       { Wert zurÔøΩck }
 end;
 
-procedure ToGraphEGA;   { wie oben jedoch Variante fÅr EGA, }
+procedure ToGraphEGA;   { wie oben jedoch Variante fÔøΩr EGA, }
 var b: byte;            { deren Register nicht lesbar sind }
 begin
   regs.ax:= $90;        { Standardmodus setzen um Zugriff sicherzustellen }
@@ -205,7 +207,7 @@ begin
   Port[$3C4]:= 2;       { Map Mask Register holen }
   Port[$3c5]:= 4;       { Plane 2 ein }
   CharGen:= CGBuf^;     { Zeichengenerator kopieren }
-  Port[$3c5]:= 0;       { Default zurÅck }
+  Port[$3c5]:= 0;       { Default zurÔøΩck }
 end;
 
 function InitTextGraf: integer; { ermittelt Monitor, setzt Variablen, }
@@ -229,9 +231,9 @@ begin                           {  reserviert Speicher }
   if VMonitor = other then exit;        { was anderes? geht nicht! }
   InitTextGraf:= 1;                     { Fehlervorgabe: kein Speicher }
   if VMonitor in [EGA, VGA] then
-  begin                                 { Vorgaben fÅr EGA & VGA }
+  begin                                 { Vorgaben fÔøΩr EGA & VGA }
     GMode:= $10;                        { Grafik 640x350 }
-    if MaxAvail >= sizeof(CGBuf) then   { Speicher fÅr Puffer belegen }
+    if MaxAvail >= sizeof(CGBuf) then   { Speicher fÔøΩr Puffer belegen }
       New(CGBuf)
     else
       exit;                             { raus mit Fehler 1 }
@@ -270,7 +272,7 @@ begin
   end;
 end;
 
-procedure ToText;       { Schaltet in Textmodus, bringt, was Åberschrieben }
+procedure ToText;       { Schaltet in Textmodus, bringt, was ÔøΩberschrieben }
 begin                   {  wird in Sicherheit }
   if ModeNr = $FF then NoInitStop;    { schon Init ? }
   GMode:= BMode;                { Grafikmodus merken }
@@ -283,10 +285,10 @@ begin                   {  wird in Sicherheit }
     EGA: ToTextEGA;
   end; {case}
   if VMonitor = Hercules then
-    HercTextMode        { Hercules Textmodus ohne Bildspeicher lîschen }
+    HercTextMode        { Hercules Textmodus ohne Bildspeicher lÔøΩschen }
   else
   begin
-    regs.ax:= TMode or $80; { Text, Bit 7 = 1: Bildspeicher nicht lîschen }
+    regs.ax:= TMode or $80; { Text, Bit 7 = 1: Bildspeicher nicht lÔøΩschen }
     intr($10, regs);
     if (VMonitor = VGA) and (VGATextPal <> nil) then
         SetVGAColors(VGATextPal^);
@@ -299,7 +301,7 @@ procedure ToGraph;     { versucht den Grafikmodus zu restaurieren }
 begin
   if ModeNr = $FF then NoInitStop;    { schon Init ? }
   TMode:= BMode;
-  TScreen^:= ScrBuf^;   { Grafikinhalt zurÅck in Textbildschirm fÅllen }
+  TScreen^:= ScrBuf^;   { Grafikinhalt zurÔøΩck in Textbildschirm fÔøΩllen }
   case VMonitor of
     VGA: begin
            if VGATextPal <> nil then
@@ -312,7 +314,7 @@ begin
     HercGraphMode               { Hercules handmade Grafikmodus }
   else
   begin
-    regs.ax:= GMode or $80; { Text, Bit 7 = 1: Bildspeicher nicht lîschen }
+    regs.ax:= GMode or $80; { Text, Bit 7 = 1: Bildspeicher nicht lÔøΩschen }
     intr($10, regs);
     if (VMonitor = VGA) and (VGAGraphPal <> nil) then
         SetVGAColors(VGAGraphPal^);

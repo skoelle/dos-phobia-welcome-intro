@@ -60,3 +60,7 @@ The main program initializes the MOD player, sets up the graphics mode, and disp
 - **Text Display**: Writes and restores text on the screen.
 - **Sound Setup**: Configures and plays sound using different devices and frequencies.
 - **User Interaction**: Responds to key presses to control the program flow and sound settings.
+
+## Lizenz
+
+Lizenziert unter der [MIT License](LICENSE) - Copyright (c) 2026 Stefan Koelle (https://stefankoelle.de)
